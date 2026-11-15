@@ -4,18 +4,18 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Моя музыка</title>
         <item>
-            <title>0.9.1</title>
-            <pubDate>Sun, 15 Nov 2026 22:13:13 +0300</pubDate>
+            <title>0.9.2</title>
+            <pubDate>Sun, 15 Nov 2026 22:18:11 +0300</pubDate>
             <link>https://github.com/archetypetrickster-tech/my-music</link>
-            <sparkle:version>901</sparkle:version>
-            <sparkle:shortVersionString>0.9.1</sparkle:shortVersionString>
+            <sparkle:version>902</sparkle:version>
+            <sparkle:shortVersionString>0.9.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<p>Иконка iOS-приложения Яндекс Музыки в Dock и Finder. Название «Моя музыка» сохранено.</p>
+            <description><![CDATA[<p>Настройки и прокси оформлены в стиле виджета Книг: переключатели справа, единые отступы, шрифты и мягкие кнопки. Длинные формы прокручиваются. Иконка из iOS-приложения Яндекс Музыки; название «Моя музыка» сохранено.</p>
 ]]></description>
-            <enclosure url="https://github.com/archetypetrickster-tech/my-music/releases/download/v0.9.1/my-music-update.zip" length="2915106" type="application/octet-stream" sparkle:edSignature="8qI9YHNvS0/03dNKVmIDugKUM2esRJOH5qr6UkpFTES5WQuA+nTG+3kOeWebt9+9gixrZO98qqJkhZDgBPTuBw=="></enclosure>
+            <enclosure url="https://github.com/archetypetrickster-tech/my-music/releases/download/v0.9.2/my-music-update.zip" length="2920736" type="application/octet-stream" sparkle:edSignature="j8dohYEDsLoFXA6T5iHK/ctqyQfduw7DkZuPymw9zXeI3cwD5CRxhYxqRmmzqSPNEEP5jeOVSX9B+UOmuBRnCQ=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: sq6Du1DTqX3gIp7mZUXbs9l4+me7BSdFKx4jiyMAZx3lFRA0Z1cTb2OaF0gwh5txbsqGiZdTGRV3T9l4f4t7Ag==
-length: 1350
+edSignature: hOZj5d7nldrg/at3Pe+mxlayUHcunzSBKwqoBUp4QMawVyL6DaqWnZVIsAW0BqBNk29dSyMk10XoqOzcylE9Bw==
+length: 1599
 -->
