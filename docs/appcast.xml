@@ -4,18 +4,18 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Моя музыка</title>
         <item>
-            <title>0.9.4</title>
-            <pubDate>Sun, 15 Nov 2026 22:34:35 +0300</pubDate>
+            <title>0.9.5</title>
+            <pubDate>Sun, 15 Nov 2026 22:40:44 +0300</pubDate>
             <link>https://github.com/archetypetrickster-tech/my-music</link>
-            <sparkle:version>904</sparkle:version>
-            <sparkle:shortVersionString>0.9.4</sparkle:shortVersionString>
+            <sparkle:version>905</sparkle:version>
+            <sparkle:shortVersionString>0.9.5</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<p>Нижний ряд управления в полном плеере поднят ближе к таймлайну: снизу больше воздуха. В выпуск включена новая иконка в едином стиле с «Моими книгами».</p>
+            <description><![CDATA[<p>Нижний отступ под кнопками мини-плеера теперь такой же, как в полном плеере. Высота мини-окна сохранена.</p>
 ]]></description>
-            <enclosure url="https://github.com/archetypetrickster-tech/my-music/releases/download/v0.9.4/my-music-update.zip" length="1793156" type="application/octet-stream" sparkle:edSignature="rmzeu95vfF1ipYKX5fSYskCTrqKUzRHt1/dlYajC/zLS6yY6aj4YArQkWnUcouHLEpZUH+vdv5BGVQoy/3lsBg=="></enclosure>
+            <enclosure url="https://github.com/archetypetrickster-tech/my-music/releases/download/v0.9.5/my-music-update.zip" length="1793971" type="application/octet-stream" sparkle:edSignature="/ZFZiOJvrzzTysgpiFsRKgkyfKgeEk24Vtz9eq7+UGTSkLOsSobRZI9jLBwGzLAqZLgudAX3M2zEE0J/unwACg=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: HY97HK0P4+6B+EDfpsiQnl8Imxksgke8h/wl+tu2buUpGgkCV5/h1gMmrcnMdtAZZNEqX31wO25yS0+X9llWDQ==
-length: 1481
+edSignature: 19mqtmxLqvKccABTghYA1Mq2eTiQXZXBwLDMmACp/OVOS4UQalLApbfAD23E6eb+vQGOXVdUFgZtElAp4wVsAQ==
+length: 1396
 -->
