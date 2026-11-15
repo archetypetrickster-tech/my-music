@@ -22,6 +22,7 @@ extension MusicApp {
         artworkContainer.isHidden = enabled
         compactArtwork.isHidden = !enabled
         timeRow.isHidden = enabled
+        playerStack.setCustomSpacing(enabled ? 2 : 8, after: trackInfoRow)
         if enabled { compactPlayerHeight.isActive = true } else { fullPlayerHeight.isActive = true }
         dockedQueue.isHidden = true
         dockedQueueSuppressed = false

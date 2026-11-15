@@ -57,6 +57,8 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
     var chromeVisible = false
     let ambientContext = CIContext(options: [.cacheIntermediates: false])
     var controlsRow: NSStackView!
+    var playerStack: NSStackView!
+    var trackInfoRow: NSStackView!
     var playerContainer: NSView!
     var playerTop: NSLayoutConstraint!
     var queueTop: NSLayoutConstraint!
@@ -409,6 +411,7 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
             view.widthAnchor.constraint(equalTo: metadataLabels.widthAnchor).isActive = true
         }
         let metadataRow = NSStackView(views: [compactArtwork, metadataLabels])
+        trackInfoRow = metadataRow
         metadataRow.orientation = .horizontal
         metadataRow.alignment = .centerY
         metadataRow.spacing = 12
@@ -454,6 +457,7 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
         controls.alignment = .centerY
         controlsRow = controls
         let stack = NSStackView(views: [top, artworkContainer, metadataRow, progress, timeRow, controls])
+        playerStack = stack
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 0
