@@ -462,7 +462,7 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
         stack.setCustomSpacing(14, after: artworkContainer)
         stack.setCustomSpacing(8, after: metadataRow)
         stack.setCustomSpacing(2, after: progress)
-        stack.setCustomSpacing(10, after: timeRow)
+        stack.setCustomSpacing(4, after: timeRow)
         playerContainer.addSubview(stack)
         for view in [top, artworkContainer!, metadataRow, progress, timeRow!] {
             view.translatesAutoresizingMaskIntoConstraints = false
