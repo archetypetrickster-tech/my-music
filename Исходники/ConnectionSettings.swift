@@ -135,20 +135,18 @@ private final class ProxyChoice: HoverButton {
 final class ConnectionPanel: NSView {
     var onCheckForUpdates: (() -> Void)?
     var onAutomaticUpdatesChanged: ((Bool) -> Void)?
-    private let automaticUpdates = NSButton(
-        checkboxWithTitle: "Проверять обновления автоматически", target: nil, action: nil)
-    private let checkUpdates = NSButton(title: "Проверить обновления…", target: nil, action: nil)
+    private let automaticUpdates = NSSwitch()
+    private let checkUpdates = PanelActionButton(title: "Проверить обновления…", target: nil, action: nil)
     private let footer = NSStackView()
     var onBack: (() -> Void)?
     var onSave: ((ConnectionSettings, String) -> String?)?
-    private let startup = NSButton(checkboxWithTitle: "Запускать виджет при входе", target: nil, action: nil)
-    private let autoplay = NSButton(
-        checkboxWithTitle: "Начинать музыку автоматически", target: nil, action: nil)
-    private let enabled = NSButton(checkboxWithTitle: "Использовать прокси", target: nil, action: nil)
+    private let startup = NSSwitch()
+    private let autoplay = NSSwitch()
+    private let enabled = NSSwitch()
     private let http = ProxyChoice(), socks = ProxyChoice()
-    private let back = NSButton(title: "‹ Плеер", target: nil, action: nil)
+    private let back = PanelActionButton(title: "Плеер", target: nil, action: nil)
     private let heading = NSTextField(labelWithString: "Настройки")
-    private let proxyLink = NSButton(title: "Прокси…", target: nil, action: nil)
+    private let proxyLink = PanelActionButton(title: "Прокси…", target: nil, action: nil)
     private var basic: NSStackView!, proxyForm: NSStackView!
     private var proxyPage = false
     private let host = NSTextField(), port = NSTextField(), username = NSTextField()
@@ -164,7 +162,7 @@ final class ConnectionPanel: NSView {
         let box = NSView()
         box.wantsLayer = true
         box.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.055).cgColor
-        box.layer?.cornerRadius = 10
+        box.layer?.cornerRadius = PanelStyle.radius
         box.layer?.masksToBounds = true
         let stack = NSStackView()
         stack.orientation = .vertical
@@ -216,11 +214,14 @@ final class ConnectionPanel: NSView {
         translatesAutoresizingMaskIntoConstraints = false
         back.target = self
         back.action = #selector(goBack)
-        back.isBordered = false
+        back.plain = true
+        PanelStyle.back(back)
         let title = heading
-        title.font = .systemFont(ofSize: 15, weight: .semibold)
-        let header = NSStackView(views: [back, NSView(), title])
-        header.orientation = .horizontal
+        title.font = .systemFont(ofSize: 20, weight: .bold)
+        let header = NSStackView(views: [back, title])
+        header.orientation = .vertical
+        header.alignment = .leading
+        header.spacing = 12
         http.caption = "HTTP CONNECT"
         socks.caption = "SOCKS5"
         for (index, choice) in [http, socks].enumerated() {
@@ -245,20 +246,25 @@ final class ConnectionPanel: NSView {
         proxyLink.alignment = .left
         let quiet = NSTextField(
             wrappingLabelWithString:
-                "Виджет и музыка запускаются независимо. Выключите автовоспроизведение, чтобы открывать виджет без звука."
+                "Когда автовоспроизведение выключено, виджет открывается без звука."
         )
-        quiet.font = .systemFont(ofSize: 12)
-        quiet.textColor = .secondaryLabelColor
+        quiet.font = .systemFont(ofSize: 11)
+        quiet.textColor = PanelStyle.muted
         automaticUpdates.target = self
         automaticUpdates.action = #selector(changeAutomaticUpdates)
         checkUpdates.target = self
         checkUpdates.action = #selector(checkForUpdates)
         checkUpdates.isBordered = false
         checkUpdates.alignment = .left
-        basic = NSStackView(views: [startup, autoplay, proxyLink, quiet, automaticUpdates, checkUpdates])
+        basic = NSStackView(views: [
+            PanelStyle.row("Запускать при входе", control: startup),
+            PanelStyle.row("Автовоспроизведение", control: autoplay), quiet,
+            PanelStyle.row("Проверять обновления", control: automaticUpdates),
+            checkUpdates, proxyLink,
+        ])
         basic.orientation = .vertical
         basic.alignment = .leading
-        basic.spacing = 18
+        basic.spacing = PanelStyle.gap
         let help = NSTextField(
             wrappingLabelWithString:
                 "Адрес и порт предоставляет ваш прокси-сервер или VPN-клиент. Прокси не отключает VPN; при проблемах может понадобиться исключение для музыки в самом VPN."
@@ -271,7 +277,8 @@ final class ConnectionPanel: NSView {
         note.font = .systemFont(ofSize: 11)
         note.textColor = .secondaryLabelColor
         proxyForm = NSStackView(views: [
-            enabled, section("ТИП ПРОКСИ"), group([http, socks]), section("СОЕДИНЕНИЕ"), group([host, port]),
+            PanelStyle.row("Использовать прокси", control: enabled), section("ТИП ПРОКСИ"),
+            group([http, socks]), section("СОЕДИНЕНИЕ"), group([host, port]),
             section("АУТЕНТИФИКАЦИЯ · НЕОБЯЗАТЕЛЬНО"), group([username, password]), help, note,
         ])
         proxyForm.orientation = .vertical
@@ -284,27 +291,39 @@ final class ConnectionPanel: NSView {
                 view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
             }
         }
-        let save = NSButton(title: "Сохранить", target: self, action: #selector(saveSettings))
-        save.bezelStyle = .rounded
+        let save = PanelActionButton(title: "Сохранить", target: self, action: #selector(saveSettings))
+        save.font = .systemFont(ofSize: 13)
         status.font = .systemFont(ofSize: 11)
         let stack = NSStackView(views: [header, basic!, proxyForm!, save, status])
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 16
+        stack.spacing = PanelStyle.gap
         stack.detachesHiddenViews = true
         stack.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stack)
-        for view in [header, basic!, proxyForm!, status] {
+        let scroll = NSScrollView()
+        scroll.drawsBackground = false
+        scroll.hasVerticalScroller = true
+        scroll.autohidesScrollers = true
+        scroll.scrollerStyle = .overlay
+        scroll.verticalScroller = PanelScroller()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        let document = PanelDocumentView()
+        document.translatesAutoresizingMaskIntoConstraints = false
+        scroll.documentView = document
+        document.addSubview(stack)
+        addSubview(scroll)
+        for view in [header, basic!, proxyForm!, save, status] {
             view.translatesAutoresizingMaskIntoConstraints = false
             view.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
         }
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
         let versionLabel = NSTextField(labelWithString: "Версия \(version)")
-        versionLabel.font = .systemFont(ofSize: 11)
-        versionLabel.textColor = .secondaryLabelColor
-        let github = NSButton(title: "GitHub ↗", target: self, action: #selector(openGitHub))
+        versionLabel.font = .systemFont(ofSize: 10)
+        versionLabel.textColor = PanelStyle.muted
+        let github = PanelActionButton(title: "GitHub ↗", target: self, action: #selector(openGitHub))
         github.isBordered = false
-        github.font = .systemFont(ofSize: 11)
+        github.plain = true
+        github.font = .systemFont(ofSize: 10)
         github.contentTintColor = .secondaryLabelColor
         github.toolTip = "Исходники, новые версии и обратная связь"
         footer.orientation = .horizontal
@@ -319,12 +338,16 @@ final class ConnectionPanel: NSView {
             footer.trailingAnchor.constraint(equalTo: trailingAnchor),
             footer.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
-        let fit = stack.bottomAnchor.constraint(lessThanOrEqualTo: footer.topAnchor, constant: -16)
-        fit.priority = .defaultLow
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: topAnchor),
-            stack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor), fit,
+            scroll.topAnchor.constraint(equalTo: topAnchor),
+            scroll.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scroll.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scroll.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: -16),
+            document.widthAnchor.constraint(equalTo: scroll.contentView.widthAnchor),
+            stack.topAnchor.constraint(equalTo: document.topAnchor),
+            stack.leadingAnchor.constraint(equalTo: document.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: document.trailingAnchor),
+            stack.bottomAnchor.constraint(equalTo: document.bottomAnchor),
         ])
     }
     required init?(coder: NSCoder) { fatalError("init(coder:)") }
@@ -405,7 +428,7 @@ final class ConnectionPanel: NSView {
         basic.isHidden = show
         proxyForm.isHidden = !show
         heading.stringValue = show ? "Прокси" : "Настройки"
-        back.title = show ? "‹ Настройки" : "‹ Плеер"
+        back.title = show ? "Настройки" : "Плеер"
     }
     func setUpdateState(automatic: Bool, available: Bool) {
         automaticUpdates.state = automatic ? .on : .off

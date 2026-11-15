@@ -15,7 +15,7 @@ prepare_sparkle "$build_work/sparkle"
 APP="$build_work/Моя музыка.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Helpers"
 for build_arch in arm64 x86_64; do
-    xcrun swiftc main.swift PlayerControls.swift PlayerPresentation.swift ServicePolicy.swift QueueView.swift Diagnostics.swift WindowBehavior.swift SourceSwitch.swift ConnectionSettings.swift Updates.swift -F "$build_work/sparkle" -framework Sparkle -Xlinker -rpath -Xlinker @executable_path/../Frameworks -O -target "$build_arch-apple-macosx13.0" -framework AppKit -framework WebKit -framework Network -framework Security -o "$build_work/MoyaMusic-$build_arch"
+    xcrun swiftc main.swift PlayerControls.swift PanelStyle.swift PlayerPresentation.swift ServicePolicy.swift QueueView.swift Diagnostics.swift WindowBehavior.swift SourceSwitch.swift ConnectionSettings.swift Updates.swift -F "$build_work/sparkle" -framework Sparkle -Xlinker -rpath -Xlinker @executable_path/../Frameworks -O -target "$build_arch-apple-macosx13.0" -framework AppKit -framework WebKit -framework Network -framework Security -o "$build_work/MoyaMusic-$build_arch"
     xcrun swiftc headphones.swift -O -target "$build_arch-apple-macosx13.0" -framework AppKit -framework CoreAudio -o "$build_work/Headphones-$build_arch"
 done
 xcrun lipo -create "$build_work/MoyaMusic-arm64" "$build_work/MoyaMusic-x86_64" -output "$APP/Contents/MacOS/MoyaMusic"
@@ -40,8 +40,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundleName</key><string>Моя музыка</string>
 <key>CFBundleDisplayName</key><string>Моя музыка</string>
-<key>CFBundleVersion</key><string>901</string>
-<key>CFBundleShortVersionString</key><string>0.9.1</string>
+<key>CFBundleVersion</key><string>902</string>
+<key>CFBundleShortVersionString</key><string>0.9.2</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>

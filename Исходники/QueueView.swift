@@ -115,7 +115,9 @@ private final class QueueTableRow: NSTableRowView {
         (current
             ? NSColor.yellow.withAlphaComponent(0.10 + 0.025 * hoverAmount)
             : NSColor.white.withAlphaComponent(0.055 * hoverAmount)).setFill()
-        NSBezierPath(roundedRect: bounds.insetBy(dx: 1, dy: 2), xRadius: 7, yRadius: 7).fill()
+        NSBezierPath(
+            roundedRect: bounds.insetBy(dx: 1, dy: 2), xRadius: PanelStyle.radius, yRadius: PanelStyle.radius
+        ).fill()
     }
 }
 
@@ -165,7 +167,7 @@ private final class QueueTable: NSTableView {
     }
 }
 
-private final class QueueScroller: NSScroller {
+final class PanelScroller: NSScroller {
     private var hovered = false
     private var tracking: NSTrackingArea?
     override class var isCompatibleWithOverlayScrollers: Bool { true }
@@ -211,7 +213,7 @@ final class QueuePanel: NSView, NSTableViewDataSource, NSTableViewDelegate {
     private let heading = NSTextField(labelWithString: "Волна")
     private let queueLabel = NSTextField(labelWithString: "Очередь")
     private let countLabel = NSTextField(labelWithString: "")
-    private let back = NSButton(title: "Плеер", target: nil, action: nil)
+    private let back = PanelActionButton(title: "Плеер", target: nil, action: nil)
     private let table = QueueTable()
     private let scroll = NSScrollView()
     private let status = NSTextField(wrappingLabelWithString: "Загружаю очередь…")
@@ -230,6 +232,8 @@ final class QueuePanel: NSView, NSTableViewDataSource, NSTableViewDelegate {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         translatesAutoresizingMaskIntoConstraints = false
+        back.plain = true
+        PanelStyle.back(back)
         back.target = self
         back.action = #selector(goBack)
         back.isBordered = false
@@ -281,7 +285,7 @@ final class QueuePanel: NSView, NSTableViewDataSource, NSTableViewDelegate {
         table.target = self
         table.action = #selector(selectRow)
         table.setAccessibilityLabel("Очередь треков")
-        let scroller = QueueScroller()
+        let scroller = PanelScroller()
         scroller.controlSize = .small
         scroller.scrollerStyle = .overlay
         scroll.verticalScroller = scroller
