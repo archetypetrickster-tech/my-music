@@ -67,6 +67,7 @@ enum PendingWindowAction { case hide, minimize, exit }
 
 // Our size animation can be cancelled before macOS takes control of the window.
 final class PlayerFrameAnimator: NSObject, NSAnimationDelegate {
+    static let duration: TimeInterval = 0.22
     private var animation: NSViewAnimation?
     private var completion: (() -> Void)?
     func move(_ window: NSWindow, to frame: NSRect, completion: @escaping () -> Void) {
@@ -80,7 +81,8 @@ final class PlayerFrameAnimator: NSObject, NSAnimationDelegate {
         ])
         self.animation = animation
         self.completion = completion
-        animation.duration = 0.22
+        animation.duration = Self.duration
+        animation.frameRate = Float(max(60, min(120, window.screen?.maximumFramesPerSecond ?? 60)))
         animation.animationCurve = .easeInOut
         animation.animationBlockingMode = .nonblocking
         animation.delegate = self
@@ -134,7 +136,9 @@ extension MusicApp {
             && frame.maxY < area.maxY - 12
     }
     func layoutPlayerColumn() {
-        guard let root = surface, playerWidth != nil, queueWidth != nil, root.bounds.width >= 340 else {
+        guard let root = surface, playerWidth != nil, queueWidth != nil, root.bounds.width >= 340,
+            !windowTransition
+        else {
             return
         }
         let heightLimit = compact ? 660 : max(340, root.bounds.height - chromeInset - 228)
@@ -199,9 +203,11 @@ extension MusicApp {
     }
     func updateChromeInset() {
         guard let host = mini?.contentView, let surface, playerTop != nil else { return }
-        let gutter: CGFloat = floatsChromeAboveCard ? 30 : 0
+        let gutter: CGFloat = windowTransition ? chromeGutter : (floatsChromeAboveCard ? 30 : 0)
         let inset: CGFloat =
-            gutter > 0 ? 0 : (usesNativeWindowControls ? max(30, host.safeAreaInsets.top) : 30)
+            windowTransition
+            ? chromeInset
+            : (gutter > 0 ? 0 : (usesNativeWindowControls ? max(30, host.safeAreaInsets.top) : 30))
         chromeGutter = gutter
         let frame = NSRect(x: 0, y: 0, width: host.bounds.width, height: max(1, host.bounds.height - gutter))
         if surface.frame != frame { surface.frame = frame }

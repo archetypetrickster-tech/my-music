@@ -59,6 +59,7 @@ extension MusicApp {
         transitionSnapshot?.removeFromSuperview()
         transitionSnapshot = nil
         windowTransition = false
+        positionChrome()
         compactButton.isEnabled = true
         configureWindowLimits()
         layoutPlayerColumn()
@@ -168,7 +169,10 @@ extension MusicApp {
         animateQueueChange(to: frame, showing: playerContainer, frozen: frozen)
     }
     func queueTransitionSnapshot() -> NSImageView? {
-        guard mini.isVisible && !selfTest && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else {
+        guard
+            mini.isVisible && (!selfTest || motionTest)
+                && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+        else {
             return nil
         }
         return snapshotOverlay(
@@ -186,6 +190,7 @@ extension MusicApp {
         windowTransition = true
         compactButton.isEnabled = false
         view.alphaValue = 0
+        view.superview?.layoutSubtreeIfNeeded()
         let resize = !preservesSystemFrame && mini.frame != frame
         var sizeDone = !resize
         var fadeDone = false
@@ -201,7 +206,7 @@ extension MusicApp {
         }
         NSAnimationContext.runAnimationGroup(
             { context in
-                context.duration = 0.20
+                context.duration = PlayerFrameAnimator.duration
                 context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
                 frozen.animator().alphaValue = 0
                 view.animator().alphaValue = 1

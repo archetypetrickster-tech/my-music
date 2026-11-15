@@ -102,6 +102,10 @@ extension MusicApp {
                 sanitized.first?["duration"] as? Double == 0 && sanitized.first?["url"] as? String == ""
                     && sanitized.first?["unknown"] == nil)
             self.update(state)
+            if self.motionTest {
+                self.runMotionTest()
+                return
+            }
             self.checkSourceSwitch()
             let original = self.compact
             if let path = ProcessInfo.processInfo.environment["MOYA_PREVIEW_ARTWORK"],
@@ -534,5 +538,101 @@ extension MusicApp {
             )
             fflush(stdout)
         }
+    }
+}
+
+extension MusicApp {
+    func runMotionTest() {
+        let area = mini.screen!.visibleFrame
+        let cases: [(CGFloat, Bool)] = [(340, false), (416, false), (416, true)]
+        var index = 0
+        var failures: [String] = []
+        var runCase: (() -> Void)!
+        runCase = { [self] in
+            guard index < cases.count else {
+                print(
+                    failures.isEmpty
+                        ? "MOTION_TEST_OK: stable width and top edge in both directions, including screen edge"
+                        : "MOTION_TEST_FAILED: \(failures)")
+                fflush(stdout)
+                exit(failures.isEmpty ? 0 : 1)
+            }
+            let (width, edge) = cases[index]
+            index += 1
+            compact = false
+            fullPlayerHeight.isActive = true
+            compactPlayerHeight.isActive = false
+            artworkContainer.isHidden = false
+            compactArtwork.isHidden = true
+            timeRow.isHidden = false
+            mini.minSize = NSSize(width: 340, height: 252)
+            let height = width + 258
+            mini.setFrame(
+                NSRect(x: area.midX - width / 2, y: area.maxY - height - 50, width: width, height: height),
+                display: true)
+            positionChrome()
+            layoutPlayerColumn()
+            mini.contentView?.layoutSubtreeIfNeeded()
+            var step = 0
+            var next: (() -> Void)!
+            next = { [self] in
+                guard step < 4 else {
+                    runCase()
+                    return
+                }
+                let destination = step % 2 == 0
+                step += 1
+                if edge && destination {
+                    var frame = mini.frame
+                    frame.origin.y = area.minY + 5
+                    mini.setFrame(frame, display: true)
+                    positionChrome()
+                }
+                let top = mini.frame.maxY
+                let expectedWidth = playerWidth.constant
+                var widths: [CGFloat] = []
+                var topError: CGFloat = 0
+                let started = Date()
+                setCompact(destination)
+                let snapshotTop = transitionSnapshot.map {
+                    mini.convertToScreen($0.convert($0.bounds, to: nil)).maxY
+                }
+                var snapshotDrift: CGFloat = 0
+                var previousHeight = mini.frame.height
+                var reversed = false
+                let timer = Timer(timeInterval: 1.0 / 120, repeats: true) { [self] timer in
+                    widths.append(playerWidth.constant)
+                    if let snapshotTop, let snapshot = transitionSnapshot {
+                        snapshotDrift = max(
+                            snapshotDrift,
+                            abs(
+                                mini.convertToScreen(snapshot.convert(snapshot.bounds, to: nil)).maxY
+                                    - snapshotTop))
+                    }
+                    let change = mini.frame.height - previousHeight
+                    if destination ? change > 0.5 : change < -0.5 { reversed = true }
+                    previousHeight = mini.frame.height
+                    topError = max(topError, abs(mini.frame.maxY - top))
+                    if !windowTransition {
+                        timer.invalidate()
+                        let drift = widths.map { abs($0 - expectedWidth) }.max() ?? 0
+                        let detail =
+                            "width=\(width) edge=\(edge) compact=\(destination) samples=\(widths.count) widthDrift=\(drift) topDrift=\(topError) snapshotDrift=\(snapshotDrift) reversed=\(reversed)"
+                        print("MOTION_SAMPLE: \(detail)")
+                        if drift > 1 || topError > 1 || snapshotDrift > 1 || reversed {
+                            failures.append(detail)
+                        }
+                        fflush(stdout)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { next() }
+                    } else if Date().timeIntervalSince(started) > 2 {
+                        print("MOTION_TEST_FAILED: animation did not complete")
+                        exit(1)
+                    }
+                }
+                RunLoop.main.add(timer, forMode: .common)
+            }
+            next()
+        }
+        runCase()
     }
 }

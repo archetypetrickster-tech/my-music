@@ -95,7 +95,10 @@ zsh Исходники/build.sh
 
 # Полный экран, выход, сворачивание и геометрия окна
 # Временно переключает тестовое окно в полный экран и обратно
-./Моя\ музыка.app/Contents/MacOS/MoyaMusic --window-test
+open -W -n "Моя музыка.app" --args --window-test
+
+# Реальные переходы мини ↔ полный, ширина и верхняя граница во время анимации
+./Моя\ музыка.app/Contents/MacOS/MoyaMusic --motion-test
 
 # Дополнительно нужны Python 3 и Node.js только для этих проверок
 python3 Исходники/tests/check-installer.py

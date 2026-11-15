@@ -87,10 +87,12 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
     var compact = false
     var artworkURL = ""
     var artworkTask: URLSessionDataTask?
+    var motionTest = ProcessInfo.processInfo.arguments.contains("--motion-test")
     var liveTest = ProcessInfo.processInfo.arguments.contains("--live-check")
     var selfTest =
         ProcessInfo.processInfo.arguments.contains("--self-test")
         || ProcessInfo.processInfo.arguments.contains("--window-test")
+        || ProcessInfo.processInfo.arguments.contains("--motion-test")
     let accent = NSColor.yellow
 
     func applicationDidFinishLaunching(_ notification: Notification) {
