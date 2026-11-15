@@ -1,0 +1,8 @@
+{
+  "appStoreID": 520797969,
+  "source": "https://apps.apple.com/ru/app/id520797969",
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a9/d8/42/a9d8424e-df35-d1b6-04b3-164b6df7ca47/AppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/1024x1024bb.png",
+  "retrieved": "2026-11-15",
+  "rights": "Yandex and respective rights holders; not covered by project MIT license",
+  "conversion": "make-app-icon.swift: macOS transparent margins and rounded mask"
+}

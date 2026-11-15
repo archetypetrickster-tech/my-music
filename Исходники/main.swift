@@ -128,18 +128,10 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
     }
 
     func makeIcon() -> NSImage {
-        NSImage(size: NSSize(width: 512, height: 512), flipped: false) { rect in
-            NSColor(calibratedWhite: 0.09, alpha: 1).setFill()
-            NSBezierPath(roundedRect: rect, xRadius: 112, yRadius: 112).fill()
-            self.accent.setFill()
-            for (i, h) in [100.0, 210, 290, 170, 90].enumerated() {
-                NSBezierPath(
-                    roundedRect: NSRect(x: 118 + Double(i) * 56, y: (512 - h) / 2, width: 32, height: h),
-                    xRadius: 16, yRadius: 16
-                ).fill()
-            }
-            return true
-        }
+        guard let url = Bundle.main.url(forResource: "AppIcon", withExtension: "icns"),
+            let image = NSImage(contentsOf: url)
+        else { return NSImage(size: NSSize(width: 512, height: 512)) }
+        return image
     }
 
     func setupMenu() {
