@@ -4,18 +4,17 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Моя музыка</title>
         <item>
-            <title>0.9.6</title>
-            <pubDate>Sun, 15 Nov 2026 23:03:08 +0300</pubDate>
+            <title>0.9.7</title>
+            <pubDate>Mon, 16 Nov 2026 11:50:00 +0300</pubDate>
             <link>https://github.com/archetypetrickster-tech/my-music</link>
-            <sparkle:version>906</sparkle:version>
-            <sparkle:shortVersionString>0.9.6</sparkle:shortVersionString>
+            <sparkle:version>907</sparkle:version>
+            <sparkle:shortVersionString>0.9.7</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<p>Убрано временное сужение широкого плеера при разворачивании. Ширина и положение верхнего края сохраняются на протяжении анимации, включая переходы у края экрана. Появление содержимого и изменение размера синхронизированы.</p>
-]]></description>
-            <enclosure url="https://github.com/archetypetrickster-tech/my-music/releases/download/v0.9.6/my-music-update.zip" length="1809299" type="application/octet-stream" sparkle:edSignature="Vwp+hdiZPCoCBL7tTRhI8aBamxWGHx9UOT/7SN5Xect83t1uJtY+OjE16CxULTuOTJajanrdj2IBe3auAgezBw=="></enclosure>
+            <description><![CDATA[<h2>Единый стиль очереди</h2><p>Иконки воспроизведения и паузы в очереди стали контрастнее — как в «Моих книгах». Текущий трек по-прежнему выделяется жёлтым.</p>]]></description>
+            <enclosure url="https://github.com/archetypetrickster-tech/my-music/releases/download/v0.9.7/my-music-update.zip" length="1809306" type="application/octet-stream" sparkle:edSignature="t4UQSdq7z9BELUhIh/+Nt7qh51uUXXlkhUMHqogSk8LQFQsprA8WD+MVRaMO+uP8GbAMkQw20aJvZbNdFsTLDw=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: 0RtCFiWVOJRhs0l25PFal3O6RAh2v6jtnvpnXtC3IlUdjCA4+2qTcacmbp0eBfiRC4sq+ZwNBjDrR5MCVd10DA==
-length: 1619
+edSignature: M0YPJ19bmnMroQlMi2Rab6jTqxErTNYxWLKsgdiD6L830pTK87SuczFGjAJIHdVLPDW6g/2S0YNCFPNRh1UFDg==
+length: 1484
 -->
