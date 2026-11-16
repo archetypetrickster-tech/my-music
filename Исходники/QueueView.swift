@@ -62,7 +62,7 @@ private final class QueueTrackCell: NSView {
             NSColor.white.withAlphaComponent(0.08 * hoverAmount).setFill()
             NSBezierPath(roundedRect: hit, xRadius: 6, yRadius: 6).fill()
         }
-        let color: NSColor = current ? .yellow : .white.withAlphaComponent(0.4 + 0.6 * hoverAmount)
+        let color: NSColor = current ? .yellow : .white.withAlphaComponent(0.88 + 0.12 * hoverAmount)
         IconLibrary.draw(
             IconLibrary.image(current && playing ? "pause" : "play", size: 18),
             in: NSRect(x: hit.midX - 9, y: hit.midY - 9, width: 18, height: 18), color: color)
