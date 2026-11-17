@@ -42,6 +42,7 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
     var surface: PlayerSurface!
     var chromeGutter: CGFloat = 30
     var chromeView: ChromeHoverView!
+    let chromeWordmark = ChromeWordmark(title: "Моя музыка")
     var cardShadowWindow: NSPanel?
     var cardShadowSuspended = false
     var shadowUpdateScheduled = false

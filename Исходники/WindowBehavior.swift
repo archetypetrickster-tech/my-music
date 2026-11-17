@@ -33,6 +33,20 @@ private final class CardShadowPanel: NSPanel {
     override var canBecomeMain: Bool { false }
 }
 
+final class ChromeWordmark: NSTextField {
+    convenience init(title: String) {
+        self.init(labelWithString: title)
+        font = .systemFont(ofSize: 13, weight: .semibold)
+        textColor = .white.withAlphaComponent(0.88)
+        alignment = .center
+        maximumNumberOfLines = 1
+        lineBreakMode = .byTruncatingTail
+        isSelectable = false
+        isHidden = true
+    }
+    override func hitTest(_ point: NSPoint) -> NSView? { nil }
+}
+
 final class ChromeHostView: NSView {
     var onTopHover: ((Bool) -> Void)?
     var onLayout: (() -> Void)?
@@ -169,6 +183,7 @@ extension MusicApp {
             chromeView.addSubview(button)
         }
         root.addSubview(chromeView)
+        root.addSubview(chromeWordmark)
         positionChrome()
         refreshChromeColors()
         updateWindowControls()
@@ -282,6 +297,8 @@ extension MusicApp {
         let y = chromeGutter > 0 ? surface.frame.maxY + 2 : host.bounds.maxY - 35
         let frame = NSRect(x: surface.frame.minX + 12, y: y, width: 76, height: 24)
         if let chromeView, chromeView.frame != frame { chromeView.frame = frame }
+        chromeWordmark.frame = NSRect(x: 96, y: frame.midY - 9, width: max(0, host.bounds.width - 192), height: 18)
+        chromeWordmark.isHidden = chromeGutter > 0
     }
     func revealChrome(_ visible: Bool) {
         guard !usesNativeWindowControls else { return }

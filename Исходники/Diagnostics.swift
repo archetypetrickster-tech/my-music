@@ -267,6 +267,8 @@ extension MusicApp {
             positionChrome()
             mini.contentView?.layoutSubtreeIfNeeded()
             precondition(chromeInset == 30)
+            precondition(!chromeWordmark.isHidden && abs(chromeWordmark.frame.midX - mini.contentView!.bounds.midX) < 1)
+            precondition(chromeWordmark.hitTest(.zero) == nil)
             precondition(playerContainer.frame.maxY <= mini.contentView!.bounds.maxY - 29)
             if let path = ProcessInfo.processInfo.environment["MOYA_PREVIEW_PATH"] {
                 savePreview(URL(fileURLWithPath: path).deletingPathExtension().path + "-header.png")
@@ -384,6 +386,7 @@ extension MusicApp {
             mini.contentView?.layoutSubtreeIfNeeded()
             precondition(mini.frame == before && mini.frame.width >= target.width - 1)
             precondition(chromeGutter == 0 && chromeInset >= 30)
+            precondition(!chromeWordmark.isHidden && abs(chromeWordmark.frame.midX - mini.contentView!.bounds.midX) < 1)
             precondition(
                 playerContainer.frame.width <= 660
                     && playerContainer.frame.width <= mini.contentView!.bounds.width)
@@ -392,6 +395,7 @@ extension MusicApp {
         mini.setFrame(baseline, display: true)
         positionChrome()
         precondition(chromeGutter == 30 && chromeInset == 0)
+        precondition(chromeWordmark.isHidden)
         precondition(chromeView.frame.minY >= surface.frame.maxY)
         precondition(chromeView.window === mini)
         precondition(
@@ -416,6 +420,7 @@ extension MusicApp {
                 precondition(self.mini.standardWindowButton(.closeButton)?.isHidden == false)
                 precondition(self.mini.standardWindowButton(.zoomButton)?.isHidden == false)
                 precondition(self.chromeView.isHidden)
+                precondition(!self.chromeWordmark.isHidden && abs(self.chromeWordmark.frame.midX - self.mini.contentView!.bounds.midX) < 1)
                 precondition(self.cardShadowWindow?.isVisible != true && self.cardShadowWindow?.parent == nil)
                 let fullscreenFrame = self.mini.frame
                 self.setCompact(true)
