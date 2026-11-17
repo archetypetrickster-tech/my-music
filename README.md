@@ -67,7 +67,7 @@ cd my-music
 zsh Исходники/build.sh
 ```
 
-Рядом с исходниками появится универсальная **«Моя музыка.app»**. Сборка использует системные AppKit, WebKit, CoreAudio и CoreImage, а также Sparkle 2.10.1. Официальный архив Sparkle загружается с проверкой закреплённого SHA-256 и кэшируется; готовое приложение уже содержит framework. После сборки можно открыть корневой **«Установить.command»**.
+Готовое приложение появится в **build.noindex/Моя музыка.app**. Рабочие сборки и папки упаковки храните в каталогах с суффиксом `.noindex`: так они не создают дубли приложений в Spotlight. Сборка использует системные AppKit, WebKit, CoreAudio и CoreImage, а также Sparkle 2.10.1. Официальный архив Sparkle загружается с проверкой закреплённого SHA-256 и кэшируется; готовое приложение уже содержит framework. После сборки можно открыть корневой **«Установить.command»**.
 
 Основные файлы:
 
@@ -93,21 +93,21 @@ zsh Исходники/build.sh
 
 ```sh
 # После сборки: локальная проверка без аккаунта и музыки
-./Моя\ музыка.app/Contents/MacOS/MoyaMusic --self-test
+./build.noindex/Моя\ музыка.app/Contents/MacOS/MoyaMusic --self-test
 
 # Полный экран, выход, сворачивание и геометрия окна
 # Временно переключает тестовое окно в полный экран и обратно
-open -W -n "Моя музыка.app" --args --window-test
+open -W -n "build.noindex/Моя музыка.app" --args --window-test
 
 # Реальные переходы мини ↔ полный, ширина и верхняя граница во время анимации
-./Моя\ музыка.app/Contents/MacOS/MoyaMusic --motion-test
+./build.noindex/Моя\ музыка.app/Contents/MacOS/MoyaMusic --motion-test
 
 # Дополнительно нужны Python 3 и Node.js только для этих проверок
 python3 Исходники/tests/check-installer.py
 node Исходники/tests/check-queue.js
 
 # После подготовки подписанного выпуска: публичный ключ, feed и ZIP
-swift Исходники/tests/check-updates.swift "Моя музыка.app" /путь/appcast.xml /путь/my-music-update.zip
+swift Исходники/tests/check-updates.swift "build.noindex/Моя музыка.app" /путь/appcast.xml /путь/my-music-update.zip
 
 # Проверка WebKit через локальные HTTP/SOCKS5 серверы, macOS 14+
 python3 Исходники/tests/check-proxy.py

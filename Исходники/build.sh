@@ -1,7 +1,8 @@
 #!/bin/zsh
 set -eu
 cd "$(dirname "$0")"
-destination_app="../Моя музыка.app"
+destination_app="../build.noindex/Моя музыка.app"
+mkdir -p "$(dirname "$destination_app")"
 build_work="$(mktemp -d "${TMPDIR:-/tmp}/moyamusic-build.XXXXXX")"
 cleanup() {
     if [[ -d "$build_work/previous.app" && ! -e "$destination_app" ]]; then

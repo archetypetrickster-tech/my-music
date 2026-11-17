@@ -2,6 +2,7 @@
 set -euo pipefail
 package_dir="$(cd -- "$(dirname "$0")/.." && pwd)"
 source_app="$package_dir/Моя музыка.app"
+if [[ ! -d "$source_app" ]]; then source_app="$package_dir/build.noindex/Моя музыка.app"; fi
 installed_app='/Applications/Моя музыка.app'
 identifier='ru.ninesquares.moyamusic'
 login_enabled=0

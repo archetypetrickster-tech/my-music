@@ -21,6 +21,8 @@ with tempfile.TemporaryDirectory(prefix='moyamusic-installer-check-') as tempora
     quit_marker = root / 'quit-called'
     app = applications / 'Моя музыка.app'
     source_app = package / 'Моя музыка.app'
+    if not source_app.exists():
+        source_app = package / 'build.noindex/Моя музыка.app'
     original_script = (package / 'Исходники/install.sh').read_text()
     script = root / 'install.sh'
 
