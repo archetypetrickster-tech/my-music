@@ -99,7 +99,6 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular)
         NSApp.appearance = NSAppearance(named: .darkAqua)
-        NSApp.applicationIconImage = makeIcon()
         setupMenu()
         setupWeb()
         setupMini()
@@ -130,13 +129,6 @@ final class MusicApp: NSObject, NSApplicationDelegate, NSWindowDelegate, WKNavig
         if liveTest {
             DispatchQueue.main.asyncAfter(deadline: .now() + 18) { self.reportLivePage() }
         }
-    }
-
-    func makeIcon() -> NSImage {
-        guard let url = Bundle.main.url(forResource: "AppIcon", withExtension: "icns"),
-            let image = NSImage(contentsOf: url)
-        else { return NSImage(size: NSSize(width: 512, height: 512)) }
-        return image
     }
 
     func setupMenu() {
